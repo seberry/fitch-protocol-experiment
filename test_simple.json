@@ -1,0 +1,10 @@
+{
+  "premises": ["(A → B)"],
+  "conclusion": "(A → (A → B))",
+  "solution": [
+    {"formula": "(A → B)", "justification": "Pr", "assumeno": 0},
+    {"formula": "A", "justification": "Hyp", "assumeno": 1},
+    {"formula": "(A → B)", "justification": "R 1", "assumeno": 1},
+    {"formula": "(A → (A → B))", "justification": "→I 2-3", "assumeno": 0}
+  ]
+}
