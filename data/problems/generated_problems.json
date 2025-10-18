@@ -1,0 +1,125 @@
+[
+  {
+    "id": "entailment_001",
+    "premises": [
+      "(R -> (S & P))",
+      "(Q & (Q -> R))"
+    ],
+    "conclusion": "((S -> Q) -> (Q & S))",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  },
+  {
+    "id": "entailment_002",
+    "premises": [
+      "S",
+      "(P & (Q -> Q))",
+      "((R & Q) & R)"
+    ],
+    "conclusion": "((P & R) & S)",
+    "difficulty": {
+      "depth": 3,
+      "length": 4
+    }
+  },
+  {
+    "id": "entailment_003",
+    "premises": [
+      "P",
+      "(P -> R)"
+    ],
+    "conclusion": "((P & P) & (S -> R))",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  },
+  {
+    "id": "entailment_004",
+    "premises": [
+      "((R -> P) -> (R -> Q))",
+      "P",
+      "((P & P) -> (R & S))"
+    ],
+    "conclusion": "Q",
+    "difficulty": {
+      "depth": 3,
+      "length": 4
+    }
+  },
+  {
+    "id": "entailment_005",
+    "premises": [
+      "((S & Q) -> (Q -> P))",
+      "((R -> S) & Q)",
+      "R"
+    ],
+    "conclusion": "((Q & P) & (S -> S))",
+    "difficulty": {
+      "depth": 3,
+      "length": 4
+    }
+  },
+  {
+    "id": "entailment_006",
+    "premises": [
+      "(P & (S -> Q))",
+      "((P -> Q) & R)"
+    ],
+    "conclusion": "Q",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  },
+  {
+    "id": "entailment_007",
+    "premises": [
+      "((R -> R) & (S -> P))",
+      "((S -> R) -> (S & Q))"
+    ],
+    "conclusion": "((R & Q) -> (Q & P))",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  },
+  {
+    "id": "entailment_008",
+    "premises": [
+      "((Q & P) & (R -> S))",
+      "R"
+    ],
+    "conclusion": "((Q -> Q) -> (P -> S))",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  },
+  {
+    "id": "entailment_009",
+    "premises": [
+      "((R & S) & S)",
+      "((Q -> R) -> P)"
+    ],
+    "conclusion": "P",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  },
+  {
+    "id": "entailment_010",
+    "premises": [
+      "S",
+      "((R -> R) & (R & R))"
+    ],
+    "conclusion": "(S & (S & R))",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  }
+]

@@ -1,0 +1,63 @@
+[
+  {
+    "id": "test_001",
+    "premises": [
+      "(P → Q)",
+      "P"
+    ],
+    "conclusion": "Q",
+    "difficulty": {
+      "depth": 0,
+      "length": 3
+    }
+  },
+  {
+    "id": "test_002",
+    "premises": [
+      "(P → Q)",
+      "(Q → R)",
+      "P"
+    ],
+    "conclusion": "R",
+    "difficulty": {
+      "depth": 0,
+      "length": 4
+    }
+  },
+  {
+    "id": "test_003",
+    "premises": [
+      "(P ∧ Q)"
+    ],
+    "conclusion": "P",
+    "difficulty": {
+      "depth": 0,
+      "length": 2
+    }
+  },
+  {
+    "id": "test_004",
+    "premises": [
+      "P",
+      "Q"
+    ],
+    "conclusion": "(P ∧ Q)",
+    "difficulty": {
+      "depth": 0,
+      "length": 3
+    }
+  },
+  {
+    "id": "test_005",
+    "premises": [
+      "(P ∨ Q)",
+      "(P → R)",
+      "(Q → R)"
+    ],
+    "conclusion": "R",
+    "difficulty": {
+      "depth": 1,
+      "length": 6
+    }
+  }
+]

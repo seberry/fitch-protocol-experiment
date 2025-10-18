@@ -1,0 +1,14 @@
+﻿{
+  "premises": ["((D ∧ E) ∨ (F ∧ G))"],
+  "conclusion": "(E ∨ G)",
+  "solution": [
+    {"formula": "((D ∧ E) ∨ (F ∧ G))", "justification": "Pr", "assumeno": 0},
+    {"formula": "(D ∧ E)", "justification": "Hyp", "assumeno": 1},
+    {"formula": "E", "justification": "∧E 2", "assumeno": 1},
+    {"formula": "(E ∨ G)", "justification": "∨I 3", "assumeno": 1},
+    {"formula": "(F ∧ G)", "justification": "Hyp", "assumeno": 1},
+    {"formula": "G", "justification": "∧E 5", "assumeno": 1},
+    {"formula": "(E ∨ G)", "justification": "∨I 6", "assumeno": 1},
+    {"formula": "(E ∨ G)", "justification": "∨E 1, 2-4, 5-7", "assumeno": 0}
+  ]
+}

@@ -1,0 +1,37 @@
+[
+  {
+    "id": "student_001",
+    "premises": [
+      "(M → N)",
+      "(M ↔ A)"
+    ],
+    "conclusion": "((M ∧ N) ↔ A)",
+    "difficulty": {
+      "depth": 1,
+      "length": 3
+    }
+  },
+  {
+    "id": "student_002",
+    "premises": [
+      "(P ∨ (Q ∧ R))",
+      "(P ↔ R)"
+    ],
+    "conclusion": "R",
+    "difficulty": {
+      "depth": 1,
+      "length": 3
+    }
+  },
+  {
+    "id": "student_003",
+    "premises": [
+      "((D ∧ E) ∨ (F ∧ G))"
+    ],
+    "conclusion": "(E ∨ G)",
+    "difficulty": {
+      "depth": 1,
+      "length": 2
+    }
+  }
+]
