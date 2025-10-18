@@ -36,7 +36,7 @@ def convert_ascii_to_json(
     ascii_proof: str, 
     premises: list[str], 
     conclusion: str,
-    model: str = "gpt-4"
+    model: str = "gpt-4o-mini"
 ) -> dict:
     """
     Converts ASCII Fitch proof to JSON format using LLM.
@@ -45,7 +45,7 @@ def convert_ascii_to_json(
         ascii_proof: The complete ASCII proof (possibly with notes/annotations)
         premises: List of premise formulas
         conclusion: Target conclusion formula
-        model: LiteLLM model identifier (default: gpt-4)
+        model: LiteLLM model identifier (default: gpt-4o-mini)
     
     Returns:
         dict with keys: premises, conclusion, solution

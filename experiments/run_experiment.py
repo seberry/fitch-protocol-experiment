@@ -184,7 +184,7 @@ if __name__ == "__main__":
     parser.add_argument('--max-problems', type=int, default=None,
                        help='Maximum number of problems to test')
     
-    args = parser.parse_args()
+    args = parser.parse_args()  # ← THIS LINE IS CRITICAL
     
     run_experiment(
         problems_file=args.problems,
@@ -192,4 +192,4 @@ if __name__ == "__main__":
         conditions=args.conditions,
         model=args.model,
         max_problems=args.max_problems
-    ) 
+    )

@@ -14,6 +14,9 @@ from typing import Dict, List, Any
 from src.ascii_to_json import convert_ascii_to_json
 from src.proof_checker import check_proof
 
+# Model configuration
+DEFAULT_PROOF_MODEL = "gpt-4"
+CONVERSION_MODEL = "gpt-4o-mini"
 
 def load_protocol_prompt() -> str:
     """Load the full staged Fitch protocol from prompts/"""
@@ -273,31 +276,25 @@ No ellipses, no placeholders, just the finished Fitch proof in ASCII notation.""
             'error': str(e)
         }
 
-
-def solve_proof(premises: List[str], conclusion: str, condition: str, model: str = "gpt-4") -> Dict[str, Any]:
+def solve_proof(premises: List[str], conclusion: str, condition: str, model: str = DEFAULT_PROOF_MODEL) -> Dict[str, Any]:
     """
     Main entry point: Generate and validate a proof.
     
-    Args:
-        premises: List of premise formulas
-        conclusion: Target conclusion
-        condition: One of ['baseline', 'multi_shot', 'protocol']
-        model: LiteLLM model identifier
-    
-    Returns:
-        {
-            'condition': str,
-            'model': str,
-            'premises': [...],
-            'conclusion': str,
-            'solved': bool,
-            'ascii_proof': str or None,
-            'json_proof': dict or None,
-            'validation': dict or None,
-            'time_seconds': float,
-            'conversation_turns': int,
-            'error': str or None
-        }
+    Returns EVERYTHING for full logging:
+    {
+        'condition': str,
+        'model': str,
+        'premises': [...],
+        'conclusion': str,
+        'solved': bool,
+        'ascii_proof': str or None,
+        'json_proof': dict or None,
+        'validation': dict or None,
+        'time_seconds': float,
+        'conversation_turns': int,
+        'conversation_history': list,  # NEW: Full conversation messages
+        'error': str or None
+    }
     """
     # Generate proof based on condition
     if condition == 'baseline':
@@ -309,6 +306,7 @@ def solve_proof(premises: List[str], conclusion: str, condition: str, model: str
     else:
         raise ValueError(f"Unknown condition: {condition}")
     
+    # Early exit if proof generation failed
     if not result['success']:
         return {
             'condition': condition,
@@ -316,22 +314,23 @@ def solve_proof(premises: List[str], conclusion: str, condition: str, model: str
             'premises': premises,
             'conclusion': conclusion,
             'solved': False,
-            'ascii_proof': result['ascii_proof'],
+            'ascii_proof': result.get('ascii_proof'),
             'json_proof': None,
             'validation': None,
             'time_seconds': result['time_seconds'],
             'conversation_turns': len(result['conversation']) // 2,
+            'conversation_history': result['conversation'],  # NEW: Save full conversation
             'error': result['error']
         }
     
     # Convert ASCII to JSON
     try:
         json_proof = convert_ascii_to_json(
-            ascii_proof=result['ascii_proof'],
-            premises=premises,
-            conclusion=conclusion,
-            model=model
-        )
+    ascii_proof=result['ascii_proof'],
+    premises=premises,
+    conclusion=conclusion,
+    model=CONVERSION_MODEL  # ← Now uses cheaper model
+)
     except Exception as e:
         return {
             'condition': condition,
@@ -344,6 +343,7 @@ def solve_proof(premises: List[str], conclusion: str, condition: str, model: str
             'validation': None,
             'time_seconds': result['time_seconds'],
             'conversation_turns': len(result['conversation']) // 2,
+            'conversation_history': result['conversation'],  # NEW: Save full conversation
             'error': f'ASCII→JSON conversion failed: {e}'
         }
     
@@ -362,9 +362,11 @@ def solve_proof(premises: List[str], conclusion: str, condition: str, model: str
             'validation': None,
             'time_seconds': result['time_seconds'],
             'conversation_turns': len(result['conversation']) // 2,
+            'conversation_history': result['conversation'],  # NEW: Save full conversation
             'error': f'Validation failed: {e}'
         }
     
+    # Success! Return everything
     return {
         'condition': condition,
         'model': model,
@@ -376,6 +378,7 @@ def solve_proof(premises: List[str], conclusion: str, condition: str, model: str
         'validation': validation,
         'time_seconds': result['time_seconds'],
         'conversation_turns': len(result['conversation']) // 2,
+        'conversation_history': result['conversation'],  # NEW: Save full conversation
         'error': None
     }
 

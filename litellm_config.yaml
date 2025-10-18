@@ -1,0 +1,11 @@
+model_list:
+  - model_name: gpt5                # your alias
+    litellm_params:
+      model: gpt-5                  # actual provider model name
+      drop_params: true             # <- silently strip unknown params
+      timeout: 60
+  - model_name: gpt5mini
+    litellm_params:
+      model: gpt-5-mini
+      drop_params: true
+      timeout: 60
