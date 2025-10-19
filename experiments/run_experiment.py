@@ -20,6 +20,50 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 from src.proof_solver import solve_proof
 
 
+
+def save_conversation(
+    problem_id: str,
+    condition: str,
+    conversation: List[Dict[str, str]],
+    output_dir: str = "data/results/conversations"
+):
+    """
+    Save a conversation to a readable text file.
+    
+    Args:
+        problem_id: ID of the problem (e.g., 'test_001')
+        condition: Experimental condition (baseline/multi_shot/protocol)
+        conversation: List of message dicts with 'role' and 'content'
+        output_dir: Directory to save conversation files
+    """
+    from pathlib import Path
+    
+    # Create directory if needed
+    Path(output_dir).mkdir(parents=True, exist_ok=True)
+    
+    # Filename: test_001_protocol_conv.txt
+    filename = f"{problem_id}_{condition}_conv.txt"
+    filepath = Path(output_dir) / filename
+    
+    with open(filepath, 'w', encoding='utf-8') as f:
+        f.write(f"Problem: {problem_id}\n")
+        f.write(f"Condition: {condition}\n")
+        f.write("="*70 + "\n\n")
+        
+        for i, msg in enumerate(conversation, 1):
+            role = msg['role'].upper()
+            content = msg['content']
+            
+            f.write(f"{'='*70}\n")
+            f.write(f"TURN {i}: {role}\n")
+            f.write(f"{'='*70}\n")
+            f.write(f"{content}\n\n")
+        
+        f.write(f"{'='*70}\n")
+        f.write(f"END OF CONVERSATION\n")
+        f.write(f"{'='*70}\n")
+
+
 def load_problems(problems_file: str) -> List[Dict[str, Any]]:
     """
     Load proof problems from JSON file.
@@ -40,7 +84,7 @@ def load_problems(problems_file: str) -> List[Dict[str, Any]]:
 
 
 def save_result(result: Dict[str, Any], output_file: str):
-    """Append a single result to CSV file."""
+    """Append a single result to CSV file with FULL logging."""
     fieldnames = [
         'timestamp',
         'problem_id',
@@ -51,11 +95,14 @@ def save_result(result: Dict[str, Any], output_file: str):
         'solved',
         'time_seconds',
         'conversation_turns',
+        # NEW: Save all the intermediate data!
+        'ascii_proof',           # The raw ASCII the LLM generated
+        'json_proof',            # The flat JSON with assumeno
+        'conversation_history',  # Full message history
         'error',
         'validation_issues'
     ]
     
-    # Check if file exists to determine if we need to write header
     file_exists = Path(output_file).exists()
     
     with open(output_file, 'a', newline='', encoding='utf-8') as f:
@@ -64,23 +111,26 @@ def save_result(result: Dict[str, Any], output_file: str):
         if not file_exists:
             writer.writeheader()
         
-        # Prepare row
+        # Prepare row with ALL the data
         row = {
             'timestamp': datetime.now().isoformat(),
             'problem_id': result.get('problem_id', 'unknown'),
             'condition': result['condition'],
             'model': result['model'],
-            'premises': json.dumps(result['premises']),
+            'premises': json.dumps(result['premises'], ensure_ascii=False),
             'conclusion': result['conclusion'],
             'solved': result['solved'],
             'time_seconds': round(result['time_seconds'], 2),
             'conversation_turns': result['conversation_turns'],
+            # Save the actual proofs and conversation!
+            'ascii_proof': result.get('ascii_proof', ''),
+            'json_proof': json.dumps(result.get('json_proof', {}), ensure_ascii=False),
+            'conversation_history': json.dumps(result.get('conversation_history', []), ensure_ascii=False),
             'error': result.get('error', ''),
-            'validation_issues': json.dumps(result.get('validation', {}).get('issues', []))
+            'validation_issues': json.dumps(result.get('validation', {}).get('issues', []), ensure_ascii=False)
         }
         
         writer.writerow(row)
-
 
 def run_experiment(
     problems_file: str,
@@ -140,6 +190,15 @@ def run_experiment(
                 
                 # Save result
                 save_result(result, output_file)
+                
+                # NEW: Save conversation to readable file
+                if 'conversation_history' in result and result['conversation_history']:
+                    save_conversation(
+                        problem_id=problem_id,
+                        condition=condition,
+                        conversation=result['conversation_history'],
+                        output_dir="data/results/conversations"
+            )
                 
                 # Print summary
                 status = "✓ SOLVED" if result['solved'] else "✗ FAILED"

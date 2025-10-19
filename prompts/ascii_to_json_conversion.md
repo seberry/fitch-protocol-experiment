@@ -13,6 +13,14 @@ You MUST produce a JSON object with EXACTLY this structure:
 - Each line has `"formula"` (NOT "content" or "wff")
 - Each line has `"assumeno"` (the depth number)
 
+**CRITICAL: Use Unicode symbols consistently:**
+- In formulas: Use `∧`, `∨`, `→`, `↔`, `¬`, `⊥`
+- In justifications: Use `∧I`, `∧E`, `∨I`, `∨E`, `→I`, `→E`, etc.
+- NEVER use `&`, `v`, `->` in the JSON output
+- NEVER mix notations like `&E` with `∧I`
+
+When you see `&` in ASCII, convert to `∧` everywhere (both formulas AND rule names).
+
 ## ASCII Notation You'll Receive
 
 The proof uses "sideways T" notation:

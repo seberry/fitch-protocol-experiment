@@ -24,8 +24,7 @@
       "length": 4
     }
   },
-  {
-    "id": "entailment_003",
+  {    "id": "entailment_003",
     "premises": [
       "P",
       "(P -> R)"

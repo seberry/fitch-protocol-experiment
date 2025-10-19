@@ -18,54 +18,53 @@ from src.proof_checker import check_proof
 DEFAULT_PROOF_MODEL = "gpt-4"
 CONVERSION_MODEL = "gpt-4o-mini"
 
-def load_protocol_prompt() -> str:
-    """Load the full staged Fitch protocol from prompts/"""
-    # For now, we'll embed it. Later we can load from file.
-    return """You are a formal logic proof assistant using Fitch-style natural deduction.
+def last_proof_has_ellipses(response_text: str) -> bool:
+    """Check if the LAST proof in the response has ellipses."""
+    import re
+    code_blocks = re.findall(r'```(?:.*?)\n(.*?)```', response_text, re.DOTALL)
+    
+    if not code_blocks:
+        return '...' in response_text
+    
+    return '...' in code_blocks[-1]
 
-IMPORTANT: Use this ASCII notation for all proofs:
-- Vertical bars (|) mark scope
-- Horizontal bars (|----) mark assumption boundaries
-- Format: line_num | formula    justification
-
-Example:
-1 | (A → B)              Premise
-2 | A                    Premise
-  |------------------------
-3 |  | P                 Assumption
-  |  |--------------------
-4 |  | (A → B)           R 1
-5 |  | B                 →E 1, 2
-  |
-6 | (P → B)              →I 3-5
-
-STAGED PROTOCOL:
-Stage 1 - Skeleton: Map the proof structure with assumptions and intended conclusions
-Stage 2+ - Fill one subproof at a time, top to bottom
-Final - Verify all assumptions discharged and conclusion reached
-
-Use standard rules: →I, →E, ∧I, ∧E, ∨I, ∨E, ↔I, ↔E, ¬I, ¬E, ⊥I, ⊥E, R, IP, LEM, etc.
-"""
+def load_fitch_rules() -> str:
+    """Load universal Fitch notation rules (used in all conditions)."""
+    rules_path = Path(__file__).parent.parent / "prompts" / "fitch_rules_prompt.md"
+    
+    if not rules_path.exists():
+        raise FileNotFoundError(f"Fitch rules not found at: {rules_path}")
+    
+    with open(rules_path, 'r', encoding='utf-8') as f:
+        return f.read()
 
 
+def load_protocol_instructions() -> str:
+    """Load staged protocol instructions (used only in protocol condition)."""
+    protocol_path = Path(__file__).parent.parent / "prompts" / "protocol_instructions.md"
+    
+    if not protocol_path.exists():
+        raise FileNotFoundError(f"Protocol instructions not found at: {protocol_path}")
+    
+    with open(protocol_path, 'r', encoding='utf-8') as f:
+        return f.read()
+    
 def solve_baseline(premises: List[str], conclusion: str, model: str, timeout: int = 60) -> Dict[str, Any]:
     """
     Baseline condition: Single prompt asking for complete proof.
+    Uses Fitch notation rules but no staged protocol.
     """
     premises_str = ", ".join(premises)
+    fitch_rules = load_fitch_rules()
     
-    prompt = f"""Prove the following argument using Fitch-style natural deduction.
+    prompt = f"""{fitch_rules}
+
+Prove the following argument using Fitch-style natural deduction.
 
 Premises: {premises_str}
 Conclusion: {conclusion}
 
-Provide the complete proof in ASCII notation using this format:
-1 | formula              justification
-2 | formula              justification
-  |------------------------
-3 |  | formula           justification  (for subproofs)
-
-Use proper Fitch notation with vertical bars for scope and horizontal bars for assumptions."""
+Provide the complete proof in ASCII notation."""
 
     start_time = time.time()
     
@@ -104,14 +103,18 @@ Use proper Fitch notation with vertical bars for scope and horizontal bars for a
 def solve_multi_shot(premises: List[str], conclusion: str, model: str, max_turns: int = 5, timeout: int = 120) -> Dict[str, Any]:
     """
     Multi-shot generic condition: Multiple turns with "work step by step" but no protocol.
+    Uses Fitch notation rules but no staged workflow.
     """
     premises_str = ", ".join(premises)
+    fitch_rules = load_fitch_rules()
     
     conversation = []
     start_time = time.time()
     
     # Initial prompt
-    initial_prompt = f"""Let's prove this argument step by step using Fitch-style natural deduction.
+    initial_prompt = f"""{fitch_rules}
+
+Let's prove this argument step by step using Fitch-style natural deduction.
 
 Premises: {premises_str}
 Conclusion: {conclusion}
@@ -182,30 +185,41 @@ Start by identifying what proof strategy might work. Then build the proof increm
             'error': str(e)
         }
 
-
 def solve_protocol(premises: List[str], conclusion: str, model: str, max_stages: int = 10, timeout: int = 180) -> Dict[str, Any]:
     """
     Full protocol condition: Staged approach with skeleton → fill → verify.
+    Uses both Fitch rules AND staged protocol instructions.
     """
     premises_str = ", ".join(premises)
-    protocol_instructions = load_protocol_prompt()
+    fitch_rules = load_fitch_rules()
+    protocol_instructions = load_protocol_instructions()
     
     conversation = []
     start_time = time.time()
     
     # Stage 1: Skeleton planning
-    stage1_prompt = f"""{protocol_instructions}
+    stage1_prompt = f"""{fitch_rules}
+
+{protocol_instructions}
 
 Now prove this argument using the staged protocol:
 
 Premises: {premises_str}
 Conclusion: {conclusion}
 
-STAGE 1 - Create the proof skeleton:
-- Write out all premises
-- Map the structure showing which subproofs you'll need
+STAGE 1 - Create the proof skeleton (or complete proof if simple):
+
+First assess: Is this proof straightforward enough to complete in one step?
+- If YES: Provide the complete proof directly in ASCII notation
+- If NO: Create a skeleton with ellipses (...) for unfinished parts
+
+If creating a skeleton:
+- Write all premises
+- Map subproof structure needed for the conclusion
 - Use ellipses (...) for steps you haven't filled yet
-- Show assumptions and intended conclusions"""
+- Show assumptions and intended conclusions
+
+IMPORTANT: Provide EITHER skeleton OR complete proof, not both."""
 
     conversation.append({'role': 'user', 'content': stage1_prompt})
     
@@ -220,12 +234,38 @@ STAGE 1 - Create the proof skeleton:
         assistant_msg = response.choices[0].message.content
         conversation.append({'role': 'assistant', 'content': assistant_msg})
         
+        # Check if proof is already complete
+        if not last_proof_has_ellipses(assistant_msg):
+            # Skip staging, go straight to final clean extraction
+            final_prompt = """Please provide the complete proof in clean ASCII notation."""
+            conversation.append({'role': 'user', 'content': final_prompt})
+            
+            response = completion(
+                model=model,
+                messages=conversation,
+                temperature=0.7,
+                timeout=timeout
+            )
+            
+            ascii_proof = response.choices[0].message.content
+            conversation.append({'role': 'assistant', 'content': ascii_proof})
+            
+            return {
+                'success': True,
+                'ascii_proof': ascii_proof,
+                'conversation': conversation,
+                'time_seconds': time.time() - start_time,
+                'error': None
+            }
+        
         # Stage 2+: Fill subproofs
         for stage in range(2, max_stages):
             fill_prompt = f"""STAGE {stage} - Fill the next unfinished subproof.
 
 Work top-to-bottom. Find the uppermost skeleton with ellipses (...) and fill it with concrete proof steps.
-Keep deeper subproofs skeletal for now."""
+Keep deeper subproofs skeletal for now.
+
+If all subproofs are complete, just say "All complete - proof is finished." """
 
             conversation.append({'role': 'user', 'content': fill_prompt})
             
@@ -239,14 +279,12 @@ Keep deeper subproofs skeletal for now."""
             assistant_msg = response.choices[0].message.content
             conversation.append({'role': 'assistant', 'content': assistant_msg})
             
-            # Check if complete (heuristic: no more ellipses)
-            if '...' not in assistant_msg and conclusion in assistant_msg:
+            # Check if done after this stage
+            if not last_proof_has_ellipses(assistant_msg):
                 break
         
         # Final stage: Get clean proof
-        final_prompt = """FINAL STAGE - Provide the complete, clean proof with all line numbers and justifications finalized.
-No ellipses, no placeholders, just the finished Fitch proof in ASCII notation."""
-
+        final_prompt = """Please provide the complete proof in clean ASCII notation."""
         conversation.append({'role': 'user', 'content': final_prompt})
         
         response = completion(
@@ -276,25 +314,25 @@ No ellipses, no placeholders, just the finished Fitch proof in ASCII notation.""
             'error': str(e)
         }
 
-def solve_proof(premises: List[str], conclusion: str, condition: str, model: str = DEFAULT_PROOF_MODEL) -> Dict[str, Any]:
+def solve_proof(
+    premises: List[str],
+    conclusion: str,
+    condition: str,
+    model: str = DEFAULT_PROOF_MODEL
+) -> Dict[str, Any]:
     """
-    Main entry point: Generate and validate a proof.
+    Main entry point for proof solving.
     
-    Returns EVERYTHING for full logging:
-    {
-        'condition': str,
-        'model': str,
-        'premises': [...],
-        'conclusion': str,
-        'solved': bool,
-        'ascii_proof': str or None,
-        'json_proof': dict or None,
-        'validation': dict or None,
-        'time_seconds': float,
-        'conversation_turns': int,
-        'conversation_history': list,  # NEW: Full conversation messages
-        'error': str or None
-    }
+    Args:
+        premises: List of premise formulas
+        conclusion: Target conclusion formula
+        condition: 'baseline', 'multi_shot', or 'protocol'
+        model: LLM model to use
+    
+    Returns:
+        Dict with keys: condition, model, premises, conclusion, solved, 
+        ascii_proof, json_proof, validation, time_seconds, 
+        conversation_turns, conversation_history, error
     """
     # Generate proof based on condition
     if condition == 'baseline':
@@ -319,18 +357,18 @@ def solve_proof(premises: List[str], conclusion: str, condition: str, model: str
             'validation': None,
             'time_seconds': result['time_seconds'],
             'conversation_turns': len(result['conversation']) // 2,
-            'conversation_history': result['conversation'],  # NEW: Save full conversation
+            'conversation_history': result['conversation'],
             'error': result['error']
         }
     
     # Convert ASCII to JSON
     try:
         json_proof = convert_ascii_to_json(
-    ascii_proof=result['ascii_proof'],
-    premises=premises,
-    conclusion=conclusion,
-    model=CONVERSION_MODEL  # ← Now uses cheaper model
-)
+            ascii_proof=result['ascii_proof'],
+            premises=premises,
+            conclusion=conclusion,
+            model=CONVERSION_MODEL
+        )
     except Exception as e:
         return {
             'condition': condition,
@@ -343,7 +381,7 @@ def solve_proof(premises: List[str], conclusion: str, condition: str, model: str
             'validation': None,
             'time_seconds': result['time_seconds'],
             'conversation_turns': len(result['conversation']) // 2,
-            'conversation_history': result['conversation'],  # NEW: Save full conversation
+            'conversation_history': result['conversation'],
             'error': f'ASCII→JSON conversion failed: {e}'
         }
     
@@ -362,7 +400,7 @@ def solve_proof(premises: List[str], conclusion: str, condition: str, model: str
             'validation': None,
             'time_seconds': result['time_seconds'],
             'conversation_turns': len(result['conversation']) // 2,
-            'conversation_history': result['conversation'],  # NEW: Save full conversation
+            'conversation_history': result['conversation'],
             'error': f'Validation failed: {e}'
         }
     
@@ -378,10 +416,9 @@ def solve_proof(premises: List[str], conclusion: str, condition: str, model: str
         'validation': validation,
         'time_seconds': result['time_seconds'],
         'conversation_turns': len(result['conversation']) // 2,
-        'conversation_history': result['conversation'],  # NEW: Save full conversation
+        'conversation_history': result['conversation'],
         'error': None
     }
-
 
 if __name__ == "__main__":
     # Test with simple example
