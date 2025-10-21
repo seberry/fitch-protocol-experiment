@@ -100,19 +100,17 @@ Provide the complete proof in ASCII notation."""
         }
 
 
-def solve_multi_shot(premises: List[str], conclusion: str, model: str, max_turns: int = 5, timeout: int = 120) -> Dict[str, Any]:
-    """
-    Multi-shot generic condition: Multiple turns with "work step by step" but no protocol.
-    Uses Fitch notation rules but no staged workflow.
-    """
-    premises_str = ", ".join(premises)
-    fitch_rules = load_fitch_rules()
-    
+def solve_multi_shot(premises, conclusion, model, max_turns=5, timeout=120):
+    """Multi-shot generic condition."""
+    # Initialize these FIRST so they exist for the except handler
     conversation = []
     start_time = time.time()
     
-    # Initial prompt
-    initial_prompt = f"""{fitch_rules}
+    try:
+        premises_str = ", ".join(premises)
+        fitch_rules = load_fitch_rules()
+        
+        initial_prompt = f"""{fitch_rules}
 
 Let's prove this argument step by step using Fitch-style natural deduction.
 
@@ -121,9 +119,8 @@ Conclusion: {conclusion}
 
 Start by identifying what proof strategy might work. Then build the proof incrementally."""
 
-    conversation.append({'role': 'user', 'content': initial_prompt})
-    
-    try:
+        conversation.append({'role': 'user', 'content': initial_prompt})
+        
         for turn in range(max_turns):
             response = completion(
                 model=model,
@@ -177,14 +174,16 @@ Start by identifying what proof strategy might work. Then build the proof increm
         }
         
     except Exception as e:
+        # CRITICAL: Always return a properly structured dict, even on error
+        # conversation and start_time are guaranteed to exist now
         return {
             'success': False,
             'ascii_proof': None,
             'conversation': conversation,
             'time_seconds': time.time() - start_time,
-            'error': str(e)
+            'error': f'Exception in solve_multi_shot: {type(e).__name__}: {str(e)}'
         }
-
+       
 def solve_protocol(premises: List[str], conclusion: str, model: str, max_stages: int = 10, timeout: int = 180) -> Dict[str, Any]:
     """
     Full protocol condition: Staged approach with skeleton → fill → verify.

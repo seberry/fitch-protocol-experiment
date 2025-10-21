@@ -19,6 +19,37 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from src.proof_solver import solve_proof
 
+def create_experiment_directory(output_file: str) -> tuple[str, str]:
+    """
+    Creates a unique experiment directory to avoid overwriting.
+    
+    Given 'data/results/pilot.csv', creates:
+    - data/results/pilot_2025-01-20_143052/
+      - results.csv
+      - conversations/ (empty, ready for conversation logs)
+    
+    Returns: (csv_path, conversations_dir)
+    """
+    path = Path(output_file)
+    stem = path.stem  # 'pilot'
+    directory = path.parent  # 'data/results'
+    
+    # Create timestamped experiment directory
+    timestamp = datetime.now().strftime('%Y-%m-%d_%H%M%S')
+    experiment_dir = directory / f"{stem}_{timestamp}"
+    
+    # Create the directory structure
+    experiment_dir.mkdir(parents=True, exist_ok=True)
+    conversations_dir = experiment_dir / "conversations"
+    conversations_dir.mkdir(exist_ok=True)
+    
+    csv_path = experiment_dir / "results.csv"
+    
+    print(f"📁 Created experiment directory: {experiment_dir}")
+    print(f"   CSV: {csv_path}")
+    print(f"   Conversations: {conversations_dir}\n")
+    
+    return str(csv_path), str(conversations_dir)
 
 
 def save_conversation(
@@ -147,10 +178,15 @@ def run_experiment(
         output_file: Path to output CSV file
         conditions: List of conditions to test
         model: LLM model to use
-        max_problems: Limit number of problems (None = all)
+        max_problems: Limit number of problems (None = all)0
     """
+      # Create experiment directory
+    csv_path, conversations_dir = create_experiment_directory(output_file)
+    
     print(f"Loading problems from {problems_file}...")
     problems = load_problems(problems_file)
+    
+
     
     if max_problems:
         problems = problems[:max_problems]
@@ -185,24 +221,27 @@ def run_experiment(
                     model=model
                 )
                 
-                # Add problem_id to result
                 result['problem_id'] = problem_id
                 
-                # Save result
-                save_result(result, output_file)
+                # Save result to CSV
+                save_result(result, csv_path)  # Use csv_path instead of output_file
                 
-                # NEW: Save conversation to readable file
-                if 'conversation_history' in result and result['conversation_history']:
-                    save_conversation(
-                        problem_id=problem_id,
-                        condition=condition,
-                        conversation=result['conversation_history'],
-                        output_dir="data/results/conversations"
-            )
+                # NEW: Save conversation log
+                conv_filename = f"{problem_id}_{condition}_conv.txt"
+                conv_path = Path(conversations_dir) / conv_filename
+                
+                with open(conv_path, 'w', encoding='utf-8') as f:
+                    for i, msg in enumerate(result.get('conversation_history', [])):
+                        f.write(f"{'='*60}\n")
+                        f.write(f"Turn {i+1} - {msg['role']}\n")
+                        f.write(f"{'='*60}\n")
+                        f.write(msg['content'])
+                        f.write(f"\n\n")
                 
                 # Print summary
-                status = "✓ SOLVED" if result['solved'] else "✗ FAILED"
+                status = "✅ SOLVED" if result['solved'] else "❌ FAILED"
                 print(f"  {status} in {result['time_seconds']:.2f}s ({result['conversation_turns']} turns)")
+                print(f"     Conversation saved to: {conv_filename}")
                 if result['error']:
                     print(f"  Error: {result['error']}")
                 

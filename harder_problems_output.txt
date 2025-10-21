@@ -1,0 +1,243 @@
+--- Entailment Finder (Interactive) ---
+
+Please select a bundle of connectives to use for generation:
+  1. Basic Implication & Conjunction (&, ->)
+  2. Positive Logic (&, ->, <->, v)
+  3. Full TFL (all connectives including ~)
+
+Enter your choice (1, 2, or 3): 3
+Searching for problems using all TFL connectives...
+Searching for 10 valid, non-trivial entailments...
+
+--- Found Entailment #1 (on attempt 838) ---
+Premises:
+  1: (~(S & R))
+  2: (~(~S))
+Conclusion:
+  |= ((~R) | (~P))
+
+--- Found Entailment #2 (on attempt 1614) ---
+Premises:
+  1: R
+  2: P
+  3: ((~P) | (~Q))
+Conclusion:
+  |= ((~Q) & (S -> R))
+
+--- Found Entailment #3 (on attempt 618) ---
+Premises:
+  1: ((P & S) & (R -> R))
+  2: ((R | Q) -> (~P))
+Conclusion:
+  |= (Q -> (~Q))
+
+--- Found Entailment #4 (on attempt 55) ---
+Premises:
+  1: (~Q)
+  2: ((R & R) -> (Q & R))
+Conclusion:
+  |= ((~P) -> (~R))
+
+--- Found Entailment #5 (on attempt 88) ---
+Premises:
+  1: ((~P) | (P -> R))
+  2: (~R)
+Conclusion:
+  |= (~(P & S))
+
+--- Found Entailment #6 (on attempt 1093) ---
+Premises:
+  1: (P | (S & S))
+  2: (~P)
+Conclusion:
+  |= (~(~S))
+
+--- Found Entailment #7 (on attempt 170) ---
+Premises:
+  1: ((~P) | (R & P))
+  2: ((Q -> P) & (~R))
+Conclusion:
+  |= (~P)
+
+--- Found Entailment #8 (on attempt 39) ---
+Premises:
+  1: ((~R) & (P | S))
+  2: ((~R) & (~S))
+Conclusion:
+  |= (~(~P))
+
+--- Found Entailment #9 (on attempt 40) ---
+Premises:
+  1: ((~P) | S)
+  2: P
+Conclusion:
+  |= S
+
+--- Found Entailment #10 (on attempt 342) ---
+Premises:
+  1: (P | (R | P))
+  2: (~(S -> R))
+Conclusion:
+  |= P
+PS C:\Users\seber\fitch-protocol-experiment> python entailment_finder_interactive.py
+--- Entailment Finder (Interactive) ---
+
+Please select a bundle of connectives to use for generation:
+  1. Basic Implication & Conjunction (&, ->)
+  2. Positive Logic (&, ->, <->, v)
+  3. Full TFL (all connectives including ~)
+
+Enter your choice (1, 2, or 3): 3
+Searching for problems using all TFL connectives...
+Searching for 10 valid, non-trivial entailments...
+
+--- Found Entailment #1 (on attempt 291) ---
+Premises:
+  1: ((~S) | (R & Q))
+  2: (~(S -> P))
+Conclusion:
+  |= R
+
+--- Found Entailment #2 (on attempt 494) ---
+Premises:
+  1: (~P)
+  2: (~S)
+Conclusion:
+  |= (~(S | P))
+
+--- Found Entailment #3 (on attempt 416) ---
+Premises:
+  1: ((~R) | (Q & S))
+  2: P
+Conclusion:
+  |= (R -> (S & P))
+
+--- Found Entailment #4 (on attempt 122) ---
+Premises:
+  1: R
+  2: ((~R) | (~P))
+Conclusion:
+  |= (~(P | P))
+
+--- Found Entailment #5 (on attempt 166) ---
+Premises:
+  1: (~(P | Q))
+  2: ((S -> P) & (R -> S))
+Conclusion:
+  |= (~R)
+
+--- Found Entailment #6 (on attempt 132) ---
+Premises:
+  1: (~(Q | Q))
+  2: (Q | (~S))
+Conclusion:
+  |= (~S)
+
+--- Found Entailment #7 (on attempt 62) ---
+Premises:
+  1: (~(Q & P))
+  2: Q
+Conclusion:
+  |= (~P)
+
+--- Found Entailment #8 (on attempt 101) ---
+Premises:
+  1: ((S & R) | Q)
+  2: (~Q)
+Conclusion:
+  |= S
+
+--- Found Entailment #9 (on attempt 67) ---
+Premises:
+  1: ((~Q) & R)
+  2: ((~Q) & (R -> P))
+Conclusion:
+  |= P
+
+--- Found Entailment #10 (on attempt 85) ---
+Premises:
+  1: (P -> Q)
+  2: ((R | Q) & (~Q))
+Conclusion:
+  |= (~P)
+PS C:\Users\seber\fitch-protocol-experiment> python entailment_finder_interactive.py
+--- Entailment Finder (Interactive) ---
+
+Please select a bundle of connectives to use for generation:
+  1. Basic Implication & Conjunction (&, ->)
+  2. Positive Logic (&, ->, <->, v)
+  3. Full TFL (all connectives including ~)
+
+Enter your choice (1, 2, or 3): 3
+Searching for problems using all TFL connectives...
+Searching for 10 valid, non-trivial entailments...
+
+--- Found Entailment #1 (on attempt 102) ---
+Premises:
+  1: ((~Q) | (P & S))
+  2: Q
+Conclusion:
+  |= P
+
+--- Found Entailment #2 (on attempt 40) ---
+Premises:
+  1: ((~P) & S)
+  2: ((~Q) -> P)
+Conclusion:
+  |= (S & Q)
+
+--- Found Entailment #3 (on attempt 601) ---
+Premises:
+  1: (~R)
+  2: (~(S | Q))
+Conclusion:
+  |= ((~R) & (~S))
+
+--- Found Entailment #4 (on attempt 226) ---
+Premises:
+  1: ((R | S) & (~Q))
+  2: (~S)
+Conclusion:
+  |= (~(~R))
+
+--- Found Entailment #5 (on attempt 14) ---
+Premises:
+  1: (~(P & S))
+  2: S
+Conclusion:
+  |= (~(P & Q))
+
+--- Found Entailment #6 (on attempt 44) ---
+Premises:
+  1: ((~Q) -> (~P))
+  2: P
+Conclusion:
+  |= (Q & P)
+
+--- Found Entailment #7 (on attempt 140) ---
+Premises:
+  1: ((~R) -> (~Q))
+  2: (~(R | P))
+Conclusion:
+  |= ((~Q) & (~Q))
+
+--- Found Entailment #8 (on attempt 122) ---
+Premises:
+  1: (~(Q & P))
+  2: (~(~P))
+Conclusion:
+  |= (~Q)
+
+--- Found Entailment #9 (on attempt 731) ---
+Premises:
+  1: S
+  2: ((S & Q) -> (~S))
+Conclusion:
+  |= (~Q)
+
+--- Found Entailment #10 (on attempt 658) ---
+Premises:
+  1: (~(P | P))
+  2: (~(~R))
+Conclusion:
+  |= ((R | Q) & (~P))
