@@ -9,14 +9,16 @@ Generates Fitch-style proofs using LLMs in three experimental conditions:
 
 import time
 from pathlib import Path
-from litellm import completion
+import litellm
 from typing import Dict, List, Any
 from src.ascii_to_json import convert_ascii_to_json
 from src.proof_checker import check_proof
+from litellm import completion
+#itellm.set_verbose = True
 
 # Model configuration
-DEFAULT_PROOF_MODEL = "gpt-4"
-CONVERSION_MODEL = "gpt-4o-mini"
+DEFAULT_PROOF_MODEL = "deepseek/deepseek-chat"
+CONVERSION_MODEL ="deepseek/deepseek-chat"
 
 def last_proof_has_ellipses(response_text: str) -> bool:
     """Check if the LAST proof in the response has ellipses."""
@@ -132,8 +134,19 @@ Start by identifying what proof strategy might work. Then build the proof increm
             assistant_msg = response.choices[0].message.content
             conversation.append({'role': 'assistant', 'content': assistant_msg})
             
-            # Check if proof looks complete
-            if "therefore" in assistant_msg.lower() or conclusion in assistant_msg:
+            # Check if proof looks complete - look for multiple signals
+            completion_signals = [
+                    "therefore" in assistant_msg.lower(),
+                    conclusion in assistant_msg,
+                    "proof is complete" in assistant_msg.lower(),
+                    "proof is finished" in assistant_msg.lower(),
+                    "done" in assistant_msg.lower() and len(assistant_msg) < 500,  # Short "done" message
+                    "no next step" in assistant_msg.lower(),
+                    "no further step" in assistant_msg.lower()
+            ]
+
+            if any(completion_signals):
+            
                 # Ask for final formatted proof
                 conversation.append({
                     'role': 'user',
@@ -426,7 +439,7 @@ if __name__ == "__main__":
         premises=["(A → B)", "A"],
         conclusion="B",
         condition="baseline",
-        model="gpt-4"
+        model="deepseek/deepseek-chat" 
     )
     
     print(f"\nSolved: {result['solved']}")

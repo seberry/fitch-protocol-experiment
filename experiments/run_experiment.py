@@ -10,6 +10,7 @@ Runs the Fitch protocol experiment:
 import sys
 import json
 import csv
+import traceback
 from pathlib import Path
 from datetime import datetime
 from typing import List, Dict, Any
@@ -158,7 +159,7 @@ def save_result(result: Dict[str, Any], output_file: str):
             'json_proof': json.dumps(result.get('json_proof', {}), ensure_ascii=False),
             'conversation_history': json.dumps(result.get('conversation_history', []), ensure_ascii=False),
             'error': result.get('error', ''),
-            'validation_issues': json.dumps(result.get('validation', {}).get('issues', []), ensure_ascii=False)
+            'validation_issues': json.dumps((result.get('validation') or {}).get('issues', []), ensure_ascii=False)
         }
         
         writer.writerow(row)
@@ -247,6 +248,8 @@ def run_experiment(
                 
             except Exception as e:
                 print(f"  ✗ EXCEPTION: {e}")
+                print("\nFull traceback:")
+                traceback.print_exc() 
                 # Log the exception
                 error_result = {
                     'problem_id': problem_id,
@@ -277,8 +280,8 @@ if __name__ == "__main__":
     parser.add_argument('--conditions', type=str, nargs='+',
                        default=['baseline', 'multi_shot', 'protocol'],
                        help='Conditions to test')
-    parser.add_argument('--model', type=str, default='gpt-4',
-                       help='LLM model to use')
+    parser.add_argument('--model', type=str, default='deepseek/deepseek-chat',  # Changed from 'gpt-4'
+                   help='LLM model to use')
     parser.add_argument('--max-problems', type=int, default=None,
                        help='Maximum number of problems to test')
     

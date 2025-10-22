@@ -1,0 +1,605 @@
+[
+  {
+    "id": "entailment_001",
+    "premises": [
+      "Q",
+      "((Q | R) -> S)"
+    ],
+    "conclusion": "(S & S)",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  },
+  {
+    "id": "entailment_002",
+    "premises": [
+      "(S -> (Q & P))",
+      "S"
+    ],
+    "conclusion": "P",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  },
+  {
+    "id": "entailment_003",
+    "premises": [
+      "((S -> P) | (Q & P))",
+      "S"
+    ],
+    "conclusion": "((Q & Q) | (P | Q))",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  },
+  {
+    "id": "entailment_004",
+    "premises": [
+      "P",
+      "((Q -> P) -> S)"
+    ],
+    "conclusion": "((S -> R) -> (R & S))",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  },
+  {
+    "id": "entailment_005",
+    "premises": [
+      "((S | P) & (R -> P))",
+      "R"
+    ],
+    "conclusion": "((P -> S) -> P)",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  },
+  {
+    "id": "entailment_006",
+    "premises": [
+      "P",
+      "((P | S) -> (R & Q))"
+    ],
+    "conclusion": "R",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  },
+  {
+    "id": "entailment_007",
+    "premises": [
+      "P",
+      "((P | Q) -> Q)"
+    ],
+    "conclusion": "Q",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  },
+  {
+    "id": "entailment_008",
+    "premises": [
+      "((R | P) -> (R & S))",
+      "((Q -> Q) -> (Q & R))"
+    ],
+    "conclusion": "((P & P) | S)",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  },
+  {
+    "id": "entailment_009",
+    "premises": [
+      "Q",
+      "R"
+    ],
+    "conclusion": "((R -> P) -> (Q & R))",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  },
+  {
+    "id": "entailment_010",
+    "premises": [
+      "P",
+      "((P | P) -> (Q | Q))"
+    ],
+    "conclusion": "Q",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  },
+  {
+    "id": "entailment_011",
+    "premises": [
+      "S",
+      "((S | S) -> (P -> R))",
+      "(R | (P | R))"
+    ],
+    "conclusion": "(R & S)",
+    "difficulty": {
+      "depth": 3,
+      "length": 4
+    }
+  },
+  {
+    "id": "entailment_012",
+    "premises": [
+      "(S -> (R & S))",
+      "S"
+    ],
+    "conclusion": "((P -> R) & S)",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  },
+  {
+    "id": "entailment_013",
+    "premises": [
+      "((S | R) -> (Q & P))",
+      "S"
+    ],
+    "conclusion": "((P | S) -> (S & P))",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  },
+  {
+    "id": "entailment_014",
+    "premises": [
+      "P",
+      "((S & S) & (P -> R))"
+    ],
+    "conclusion": "((R -> S) & R)",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  },
+  {
+    "id": "entailment_015",
+    "premises": [
+      "(Q -> R)",
+      "Q"
+    ],
+    "conclusion": "((R | P) & Q)",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  },
+  {
+    "id": "entailment_016",
+    "premises": [
+      "R",
+      "((P | P) & (Q -> P))"
+    ],
+    "conclusion": "((S -> R) & P)",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  },
+  {
+    "id": "entailment_017",
+    "premises": [
+      "((S -> R) & (S | P))",
+      "S"
+    ],
+    "conclusion": "(Q | (R & R))",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  },
+  {
+    "id": "entailment_018",
+    "premises": [
+      "P",
+      "S"
+    ],
+    "conclusion": "(P & S)",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  },
+  {
+    "id": "entailment_019",
+    "premises": [
+      "(P & (S -> P))",
+      "S"
+    ],
+    "conclusion": "(S & (P | P))",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  },
+  {
+    "id": "entailment_020",
+    "premises": [
+      "Q",
+      "((P -> P) -> (Q -> S))"
+    ],
+    "conclusion": "(S & (Q | P))",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  },
+  {
+    "id": "entailment_021",
+    "premises": [
+      "P",
+      "((Q & P) -> (P -> S))",
+      "((Q | S) & (R -> R))"
+    ],
+    "conclusion": "S",
+    "difficulty": {
+      "depth": 3,
+      "length": 4
+    }
+  },
+  {
+    "id": "entailment_022",
+    "premises": [
+      "((Q | P) -> (R & R))",
+      "(P & (P | S))"
+    ],
+    "conclusion": "(S | (R | R))",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  },
+  {
+    "id": "entailment_023",
+    "premises": [
+      "((S | S) -> Q)",
+      "S"
+    ],
+    "conclusion": "((P | S) & (Q & Q))",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  },
+  {
+    "id": "entailment_024",
+    "premises": [
+      "S",
+      "(P & P)"
+    ],
+    "conclusion": "(Q -> (S & P))",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  },
+  {
+    "id": "entailment_025",
+    "premises": [
+      "P",
+      "S"
+    ],
+    "conclusion": "((S | Q) & (P & S))",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  },
+  {
+    "id": "entailment_026",
+    "premises": [
+      "((R | Q) -> R)",
+      "((Q -> R) -> (P & R))"
+    ],
+    "conclusion": "R",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  },
+  {
+    "id": "entailment_027",
+    "premises": [
+      "Q",
+      "((P | Q) -> S)"
+    ],
+    "conclusion": "S",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  },
+  {
+    "id": "entailment_028",
+    "premises": [
+      "((Q -> Q) & (S & P))",
+      "R"
+    ],
+    "conclusion": "((P & R) & (R & P))",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  },
+  {
+    "id": "entailment_029",
+    "premises": [
+      "R",
+      "S"
+    ],
+    "conclusion": "((R & S) & (S | P))",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  },
+  {
+    "id": "entailment_030",
+    "premises": [
+      "((S -> R) | (R & R))",
+      "S"
+    ],
+    "conclusion": "(R & (R & S))",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  },
+  {
+    "id": "entailment_031",
+    "premises": [
+      "P",
+      "Q"
+    ],
+    "conclusion": "((Q | Q) & (P | S))",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  },
+  {
+    "id": "entailment_032",
+    "premises": [
+      "Q",
+      "R"
+    ],
+    "conclusion": "((Q | S) & R)",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  },
+  {
+    "id": "entailment_033",
+    "premises": [
+      "((S | R) -> (Q & S))",
+      "((Q | S) & (S | Q))"
+    ],
+    "conclusion": "((P & S) | (Q | R))",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  },
+  {
+    "id": "entailment_034",
+    "premises": [
+      "Q",
+      "R",
+      "((R | R) -> (Q -> P))"
+    ],
+    "conclusion": "(P | (S -> P))",
+    "difficulty": {
+      "depth": 3,
+      "length": 4
+    }
+  },
+  {
+    "id": "entailment_035",
+    "premises": [
+      "((S | S) -> Q)",
+      "((Q -> R) & (S & P))"
+    ],
+    "conclusion": "Q",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  },
+  {
+    "id": "entailment_036",
+    "premises": [
+      "Q",
+      "R"
+    ],
+    "conclusion": "((S -> R) & (R -> Q))",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  },
+  {
+    "id": "entailment_037",
+    "premises": [
+      "(Q & (P | P))",
+      "((S | Q) -> (Q & R))"
+    ],
+    "conclusion": "R",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  },
+  {
+    "id": "entailment_038",
+    "premises": [
+      "(R -> (R -> Q))",
+      "R"
+    ],
+    "conclusion": "((P -> Q) | Q)",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  },
+  {
+    "id": "entailment_039",
+    "premises": [
+      "(S & (S -> R))",
+      "(P & Q)"
+    ],
+    "conclusion": "((R -> Q) & (P & R))",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  },
+  {
+    "id": "entailment_040",
+    "premises": [
+      "S",
+      "((S | Q) & Q)"
+    ],
+    "conclusion": "((Q | Q) & (Q -> S))",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  },
+  {
+    "id": "entailment_041",
+    "premises": [
+      "Q",
+      "(Q -> S)"
+    ],
+    "conclusion": "(S | (R | P))",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  },
+  {
+    "id": "entailment_042",
+    "premises": [
+      "((R & R) -> (S | S))",
+      "R"
+    ],
+    "conclusion": "(S | (Q | S))",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  },
+  {
+    "id": "entailment_043",
+    "premises": [
+      "P",
+      "((P -> R) & Q)"
+    ],
+    "conclusion": "((R & P) & (P & Q))",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  },
+  {
+    "id": "entailment_044",
+    "premises": [
+      "((S & P) & (R & S))",
+      "((R | P) & (R -> Q))"
+    ],
+    "conclusion": "((P -> Q) & R)",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  },
+  {
+    "id": "entailment_045",
+    "premises": [
+      "((S -> R) & (Q | R))",
+      "S"
+    ],
+    "conclusion": "(R & R)",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  },
+  {
+    "id": "entailment_046",
+    "premises": [
+      "((S | R) & (P | Q))",
+      "((Q -> P) & (S -> Q))"
+    ],
+    "conclusion": "((P | R) | P)",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  },
+  {
+    "id": "entailment_047",
+    "premises": [
+      "S",
+      "((P & Q) & (R | R))"
+    ],
+    "conclusion": "((S | S) & P)",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  },
+  {
+    "id": "entailment_048",
+    "premises": [
+      "((R -> P) & S)",
+      "R"
+    ],
+    "conclusion": "P",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  },
+  {
+    "id": "entailment_049",
+    "premises": [
+      "Q",
+      "S"
+    ],
+    "conclusion": "((S & Q) | R)",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  },
+  {
+    "id": "entailment_050",
+    "premises": [
+      "((R & P) & (P -> R))",
+      "(R -> S)"
+    ],
+    "conclusion": "(Q -> (S & P))",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  }
+]

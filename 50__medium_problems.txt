@@ -1,0 +1,352 @@
+--- Found Entailment #1 (on attempt 4) ---
+Premises:
+  1: Q
+  2: ((Q | R) -> S)
+Conclusion:
+  |= (S & S)
+
+--- Found Entailment #2 (on attempt 119) ---
+Premises:
+  1: (S -> (Q & P))
+  2: S
+Conclusion:
+  |= P
+
+--- Found Entailment #3 (on attempt 39) ---
+Premises:
+  1: ((S -> P) | (Q & P))
+  2: S
+Conclusion:
+  |= ((Q & Q) | (P | Q))
+
+--- Found Entailment #4 (on attempt 49) ---
+Premises:
+  1: P
+  2: ((Q -> P) -> S)
+Conclusion:
+  |= ((S -> R) -> (R & S))
+
+--- Found Entailment #5 (on attempt 58) ---
+Premises:
+  1: ((S | P) & (R -> P))
+  2: R
+Conclusion:
+  |= ((P -> S) -> P)
+
+--- Found Entailment #6 (on attempt 118) ---
+Premises:
+  1: P
+  2: ((P | S) -> (R & Q))
+Conclusion:
+  |= R
+
+--- Found Entailment #7 (on attempt 151) ---
+Premises:
+  1: P
+  2: ((P | Q) -> Q)
+Conclusion:
+  |= Q
+
+--- Found Entailment #8 (on attempt 249) ---
+Premises:
+  1: ((R | P) -> (R & S))
+  2: ((Q -> Q) -> (Q & R))
+Conclusion:
+  |= ((P & P) | S)
+
+--- Found Entailment #9 (on attempt 785) ---
+Premises:
+  1: Q
+  2: R
+Conclusion:
+  |= ((R -> P) -> (Q & R))
+
+--- Found Entailment #10 (on attempt 36) ---
+Premises:
+  1: P
+  2: ((P | P) -> (Q | Q))
+Conclusion:
+  |= Q
+
+--- Found Entailment #11 (on attempt 184) ---
+Premises:
+  1: S
+  2: ((S | S) -> (P -> R))
+  3: (R | (P | R))
+Conclusion:
+  |= (R & S)
+
+--- Found Entailment #12 (on attempt 95) ---
+Premises:
+  1: (S -> (R & S))
+  2: S
+Conclusion:
+  |= ((P -> R) & S)
+
+--- Found Entailment #13 (on attempt 98) ---
+Premises:
+  1: ((S | R) -> (Q & P))
+  2: S
+Conclusion:
+  |= ((P | S) -> (S & P))
+
+--- Found Entailment #14 (on attempt 523) ---
+Premises:
+  1: P
+  2: ((S & S) & (P -> R))
+Conclusion:
+  |= ((R -> S) & R)
+
+--- Found Entailment #15 (on attempt 98) ---
+Premises:
+  1: (Q -> R)
+  2: Q
+Conclusion:
+  |= ((R | P) & Q)
+
+--- Found Entailment #16 (on attempt 84) ---
+Premises:
+  1: R
+  2: ((P | P) & (Q -> P))
+Conclusion:
+  |= ((S -> R) & P)
+
+--- Found Entailment #17 (on attempt 40) ---
+Premises:
+  1: ((S -> R) & (S | P))
+  2: S
+Conclusion:
+  |= (Q | (R & R))
+
+--- Found Entailment #18 (on attempt 241) ---
+Premises:
+  1: P
+  2: S
+Conclusion:
+  |= (P & S)
+
+--- Found Entailment #19 (on attempt 32) ---
+Premises:
+  1: (P & (S -> P))
+  2: S
+Conclusion:
+  |= (S & (P | P))
+
+--- Found Entailment #20 (on attempt 159) ---
+Premises:
+  1: Q
+  2: ((P -> P) -> (Q -> S))
+Conclusion:
+  |= (S & (Q | P))
+
+--- Found Entailment #21 (on attempt 229) ---
+Premises:
+  1: P
+  2: ((Q & P) -> (P -> S))
+  3: ((Q | S) & (R -> R))
+Conclusion:
+  |= S
+
+--- Found Entailment #22 (on attempt 434) ---
+Premises:
+  1: ((Q | P) -> (R & R))
+  2: (P & (P | S))
+Conclusion:
+  |= (S | (R | R))
+
+--- Found Entailment #23 (on attempt 81) ---
+Premises:
+  1: ((S | S) -> Q)
+  2: S
+Conclusion:
+  |= ((P | S) & (Q & Q))
+
+--- Found Entailment #24 (on attempt 77) ---
+Premises:
+  1: S
+  2: (P & P)
+Conclusion:
+  |= (Q -> (S & P))
+
+--- Found Entailment #25 (on attempt 133) ---
+Premises:
+  1: P
+  2: S
+Conclusion:
+  |= ((S | Q) & (P & S))
+
+--- Found Entailment #26 (on attempt 230) ---
+Premises:
+  1: ((R | Q) -> R)
+  2: ((Q -> R) -> (P & R))
+Conclusion:
+  |= R
+
+--- Found Entailment #27 (on attempt 878) ---
+Premises:
+  1: Q
+  2: ((P | Q) -> S)
+Conclusion:
+  |= S
+
+--- Found Entailment #28 (on attempt 459) ---
+Premises:
+  1: ((Q -> Q) & (S & P))
+  2: R
+Conclusion:
+  |= ((P & R) & (R & P))
+
+--- Found Entailment #29 (on attempt 883) ---
+Premises:
+  1: R
+  2: S
+Conclusion:
+  |= ((R & S) & (S | P))
+
+--- Found Entailment #30 (on attempt 190) ---
+Premises:
+  1: ((S -> R) | (R & R))
+  2: S
+Conclusion:
+  |= (R & (R & S))
+
+--- Found Entailment #31 (on attempt 364) ---
+Premises:
+  1: P
+  2: Q
+Conclusion:
+  |= ((Q | Q) & (P | S))
+
+--- Found Entailment #32 (on attempt 83) ---
+Premises:
+  1: Q
+  2: R
+Conclusion:
+  |= ((Q | S) & R)
+
+--- Found Entailment #33 (on attempt 110) ---
+Premises:
+  1: ((S | R) -> (Q & S))
+  2: ((Q | S) & (S | Q))
+Conclusion:
+  |= ((P & S) | (Q | R))
+
+--- Found Entailment #34 (on attempt 259) ---
+Premises:
+  1: Q
+  2: R
+  3: ((R | R) -> (Q -> P))
+Conclusion:
+  |= (P | (S -> P))
+
+--- Found Entailment #35 (on attempt 564) ---
+Premises:
+  1: ((S | S) -> Q)
+  2: ((Q -> R) & (S & P))
+Conclusion:
+  |= Q
+
+--- Found Entailment #36 (on attempt 378) ---
+Premises:
+  1: Q
+  2: R
+Conclusion:
+  |= ((S -> R) & (R -> Q))
+
+--- Found Entailment #37 (on attempt 148) ---
+Premises:
+  1: (Q & (P | P))
+  2: ((S | Q) -> (Q & R))
+Conclusion:
+  |= R
+
+--- Found Entailment #38 (on attempt 76) ---
+Premises:
+  1: (R -> (R -> Q))
+  2: R
+Conclusion:
+  |= ((P -> Q) | Q)
+
+--- Found Entailment #39 (on attempt 243) ---
+Premises:
+  1: (S & (S -> R))
+  2: (P & Q)
+Conclusion:
+  |= ((R -> Q) & (P & R))
+
+--- Found Entailment #40 (on attempt 303) ---
+Premises:
+  1: S
+  2: ((S | Q) & Q)
+Conclusion:
+  |= ((Q | Q) & (Q -> S))
+
+--- Found Entailment #41 (on attempt 163) ---
+Premises:
+  1: Q
+  2: (Q -> S)
+Conclusion:
+  |= (S | (R | P))
+
+--- Found Entailment #42 (on attempt 398) ---
+Premises:
+  1: ((R & R) -> (S | S))
+  2: R
+Conclusion:
+  |= (S | (Q | S))
+
+--- Found Entailment #43 (on attempt 252) ---
+Premises:
+  1: P
+  2: ((P -> R) & Q)
+Conclusion:
+  |= ((R & P) & (P & Q))
+
+--- Found Entailment #44 (on attempt 174) ---
+Premises:
+  1: ((S & P) & (R & S))
+  2: ((R | P) & (R -> Q))
+Conclusion:
+  |= ((P -> Q) & R)
+
+--- Found Entailment #45 (on attempt 458) ---
+Premises:
+  1: ((S -> R) & (Q | R))
+  2: S
+Conclusion:
+  |= (R & R)
+
+--- Found Entailment #46 (on attempt 145) ---
+Premises:
+  1: ((S | R) & (P | Q))
+  2: ((Q -> P) & (S -> Q))
+Conclusion:
+  |= ((P | R) | P)
+
+--- Found Entailment #47 (on attempt 160) ---
+Premises:
+  1: S
+  2: ((P & Q) & (R | R))
+Conclusion:
+  |= ((S | S) & P)
+
+--- Found Entailment #48 (on attempt 219) ---
+Premises:
+  1: ((R -> P) & S)
+  2: R
+Conclusion:
+  |= P
+
+--- Found Entailment #49 (on attempt 459) ---
+Premises:
+  1: Q
+  2: S
+Conclusion:
+  |= ((S & Q) | R)
+
+--- Found Entailment #50 (on attempt 720) ---
+Premises:
+  1: ((R & P) & (P -> R))
+  2: (R -> S)
+Conclusion:
+  |= (Q -> (S & P))

@@ -12,7 +12,7 @@ ALL_CONNECTIVES = {
 }
 MAX_DEPTH = 2
 NUM_PREMISES_RANGE = (2, 3)
-TARGET_ENTAILMENTS = 10
+TARGET_ENTAILMENTS = 50
 
 # A global mapping from atom names to integer variables for the SAT solver
 ATOM_MAP = {atom: i + 1 for i, atom in enumerate(ATOMS)}
