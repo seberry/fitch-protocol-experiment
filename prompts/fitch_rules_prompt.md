@@ -275,12 +275,9 @@ Example:
 ```
 
 **Law of Excluded Middle (LEM) / Tertium Non Datur (TND):**
-For any formula `A`, you can assert `A ∨ ¬A`
+ `A ∨ ¬A` we DONT have this as a basic rule. But you can try to derive it!
 
-Example:
-```
-1 | (P ∨ ¬P)             LEM
-```
+
 
 **Double Negation Elimination (DNE):**
 From `¬¬A`, infer `A`

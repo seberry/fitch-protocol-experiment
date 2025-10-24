@@ -262,10 +262,10 @@ def run_experiment(
                     'conversation_turns': 0,
                     'error': f'Exception: {e}'
                 }
-                save_result(error_result, output_file)
+                save_result(error_result, csv_path)
     
     print(f"\n{'='*60}")
-    print(f"Experiment complete! Results saved to {output_file}")
+    print(f"Experiment complete! Results saved to {csv_path}")
     print(f"{'='*60}")
 
 

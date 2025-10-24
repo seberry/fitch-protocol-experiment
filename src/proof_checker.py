@@ -11,7 +11,6 @@ import tempfile
 from pathlib import Path
 from typing import Dict, Any
 
-
 def check_proof(proof_json: dict) -> dict:
     """
     Validates a proof using the PHP checker.
@@ -20,7 +19,7 @@ def check_proof(proof_json: dict) -> dict:
         proof_json: Flat format with assumeno, e.g.:
             {
                 "premises": ["(A → B)", "A"],
-                "conclusion": "B",
+                "conclusion": "B", 
                 "solution": [
                     {"formula": "(A → B)", "justification": "Pr", "assumeno": 0},
                     ...
@@ -54,7 +53,10 @@ def check_proof(proof_json: dict) -> dict:
         
         output = result.stdout
         
-# Parse the output
+        # DEBUG: Print raw PHP output
+        print(f"  PHP Checker Raw Output: {output}")
+        
+        # Parse the output
         # Check for INVALID first (more specific)
         if "INVALID" in output or "? INVALID" in output:
             # Extract issues from output
@@ -80,17 +82,28 @@ def check_proof(proof_json: dict) -> dict:
                 'raw_output': output
             }
         else:
-            # Unclear output - default to invalid
+            # DEBUG: More detailed unknown output handling
+            print(f"  ⚠️ Unknown PHP output format")
             return {
                 'valid': False,
-                'issues': ['Could not parse checker output'],
+                'issues': [f'Could not parse checker output: {output[:200]}...'],
                 'concReached': False,
                 'raw_output': output
             }
     
+    except Exception as e:
+        print(f"  💥 Exception in check_proof: {e}")
+        return {
+            'valid': False,
+            'issues': [f'Checker exception: {e}'],
+            'concReached': False,
+            'raw_output': str(e)
+        }
+    
     finally:
         # Clean up temp file
         Path(temp_path).unlink(missing_ok=True)
+
 
 
 if __name__ == "__main__":

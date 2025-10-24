@@ -11,6 +11,11 @@ import re
 from pathlib import Path
 from litellm import completion
 from typing import Dict, List, Any, Optional
+import sys
+
+# FIX: Add parent directory to path so we can import from src/
+sys.path.insert(0, str(Path(__file__).parent.parent))
+
 
 
 class ParseError(Exception):
@@ -46,6 +51,7 @@ def normalize_symbols(text: str) -> str:
         '->': '→', 
         '<->': '↔',
         '~': '¬',
+        '|': '∨'
     }
     
     result = text
@@ -166,7 +172,7 @@ def parse_ascii_proof_deterministic(
     if not conclusion:
         raise ParseError("No conclusion found or provided")
     
-    # NEW: Normalize premises and conclusion to Unicode symbols
+    # FIX: Always normalize premises and conclusion to Unicode symbols
     premises = [normalize_symbols(p) for p in premises]
     conclusion = normalize_symbols(conclusion)
     
@@ -186,6 +192,7 @@ def parse_ascii_proof_deterministic(
         'conclusion': conclusion,
         'solution': solution
     }
+
 # ============================================================================
 # LLM CONVERTER (existing code - keep as fallback)
 # ============================================================================
@@ -267,10 +274,11 @@ Return ONLY the JSON object, no additional text."""
     except Exception as e:
         raise ValueError(f"Conversion failed: {e}")
 
-
 # ============================================================================
 # HYBRID CONVERTER (new main entry point)
 # ============================================================================
+
+
 
 def convert_ascii_to_json(
     ascii_proof: str,
@@ -284,8 +292,15 @@ def convert_ascii_to_json(
     This is the main entry point used by proof_solver.py.
     """
     try:
-        # Try deterministic parsing
-        result = parse_ascii_proof_deterministic(ascii_proof, premises, conclusion)
+        # FIX: Normalize premises and conclusion symbols before parsing
+        normalized_premises = [normalize_symbols(p) for p in premises]
+        normalized_conclusion = normalize_symbols(conclusion)
+        
+        result = parse_ascii_proof_deterministic(
+            ascii_proof, 
+            normalized_premises, 
+            normalized_conclusion
+        )
         print("[ASCII→JSON] ✓ Deterministic parsing succeeded (free)")
         return result
         
@@ -294,6 +309,7 @@ def convert_ascii_to_json(
         print(f"[ASCII→JSON] ✗ Parse failed: {e}")
         print("[ASCII→JSON] → Using LLM fallback")
         return convert_ascii_to_json_llm(ascii_proof, premises, conclusion, model)
+
 
 
 # ============================================================================

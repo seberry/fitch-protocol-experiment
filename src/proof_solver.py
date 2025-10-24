@@ -101,53 +101,46 @@ Provide the complete proof in ASCII notation."""
             'error': str(e)
         }
 
-
 def solve_multi_shot(premises, conclusion, model, max_turns=5, timeout=120):
     """Multi-shot generic condition."""
-    # Initialize these FIRST so they exist for the except handler
-    conversation = []
-    start_time = time.time()
+    # ... existing code ...
     
-    try:
-        premises_str = ", ".join(premises)
-        fitch_rules = load_fitch_rules()
+    for turn in range(max_turns):
+        response = completion(
+            model=model,
+            messages=conversation,
+            temperature=0.7,
+            timeout=timeout
+        )
         
-        initial_prompt = f"""{fitch_rules}
-
-Let's prove this argument step by step using Fitch-style natural deduction.
-
-Premises: {premises_str}
-Conclusion: {conclusion}
-
-Start by identifying what proof strategy might work. Then build the proof incrementally."""
-
-        conversation.append({'role': 'user', 'content': initial_prompt})
+        assistant_msg = response.choices[0].message.content
+        conversation.append({'role': 'assistant', 'content': assistant_msg})
         
-        for turn in range(max_turns):
-            response = completion(
-                model=model,
-                messages=conversation,
-                temperature=0.7,
-                timeout=timeout
-            )
-            
-            assistant_msg = response.choices[0].message.content
-            conversation.append({'role': 'assistant', 'content': assistant_msg})
-            
-            # Check if proof looks complete - look for multiple signals
-            completion_signals = [
-                    "therefore" in assistant_msg.lower(),
-                    conclusion in assistant_msg,
-                    "proof is complete" in assistant_msg.lower(),
-                    "proof is finished" in assistant_msg.lower(),
-                    "done" in assistant_msg.lower() and len(assistant_msg) < 500,  # Short "done" message
-                    "no next step" in assistant_msg.lower(),
-                    "no further step" in assistant_msg.lower()
-            ]
+        # IMPROVED: Better completion detection
+        completion_signals = [
+            "proof is complete" in assistant_msg.lower(),
+            "proof is finished" in assistant_msg.lower(), 
+            "no next step" in assistant_msg.lower(),
+            "no further step" in assistant_msg.lower(),
+            "qed" in assistant_msg.lower(),
+            "done" in assistant_msg.lower() and len(assistant_msg) < 500,
+            # NEW: Look for explicit completion markers
+            "this completes the proof" in assistant_msg.lower(),
+            "the proof is done" in assistant_msg.lower(),
+            "we have reached the conclusion" in assistant_msg.lower(),
+            # NEW: Check if last code block looks complete (has conclusion)
+            conclusion in assistant_msg and any(line.strip().endswith(conclusion) for line in assistant_msg.split('\n') if '|' in line),
+            # NEW: Check for final line with conclusion
+            any(f"| {conclusion}" in line for line in assistant_msg.split('\n'))
+        ]
 
-            if any(completion_signals):
-            
-                # Ask for final formatted proof
+        # NEW: Also check if the proof looks structurally complete
+        if looks_like_complete_proof(assistant_msg, conclusion):
+            completion_signals.append(True)
+
+        if any(completion_signals):
+            # Only ask for final formatting if proof isn't already clean
+            if not has_clean_ascii_proof(assistant_msg):
                 conversation.append({
                     'role': 'user',
                     'content': 'Please provide the complete proof in clean ASCII Fitch notation.'
@@ -162,93 +155,77 @@ Start by identifying what proof strategy might work. Then build the proof increm
                 
                 ascii_proof = response.choices[0].message.content
                 conversation.append({'role': 'assistant', 'content': ascii_proof})
-                
-                return {
-                    'success': True,
-                    'ascii_proof': ascii_proof,
-                    'conversation': conversation,
-                    'time_seconds': time.time() - start_time,
-                    'error': None
-                }
+            else:
+                # Extract the clean proof directly
+                ascii_proof = extract_clean_proof(assistant_msg)
             
-            # Continue prompting
-            conversation.append({
-                'role': 'user',
-                'content': 'Continue. What\'s the next step?'
-            })
+            return {
+                'success': True,
+                'ascii_proof': ascii_proof,
+                'conversation': conversation,
+                'time_seconds': time.time() - start_time,
+                'error': None
+            }
         
-        # Ran out of turns
-        return {
-            'success': False,
-            'ascii_proof': None,
-            'conversation': conversation,
-            'time_seconds': time.time() - start_time,
-            'error': 'Max turns reached without completing proof'
-        }
-        
-    except Exception as e:
-        # CRITICAL: Always return a properly structured dict, even on error
-        # conversation and start_time are guaranteed to exist now
-        return {
-            'success': False,
-            'ascii_proof': None,
-            'conversation': conversation,
-            'time_seconds': time.time() - start_time,
-            'error': f'Exception in solve_multi_shot: {type(e).__name__}: {str(e)}'
-        }
-       
+        # Continue prompting
+        conversation.append({
+            'role': 'user',
+            'content': 'Continue. What\'s the next step?'
+        })
+
+# NEW: Helper functions for better completion detection
+def looks_like_complete_proof(text: str, conclusion: str) -> bool:
+    """Check if the text contains a proof that looks structurally complete."""
+    lines = text.split('\n')
+    proof_lines = [line for line in lines if '|' in line and line.strip()]
+    
+    if len(proof_lines) < 2:
+        return False
+    
+    # Check if last proof line contains the conclusion
+    last_proof_line = proof_lines[-1]
+    return conclusion in last_proof_line and 'Pr' not in last_proof_line
+
+def has_clean_ascii_proof(text: str) -> bool:
+    """Check if text already contains a clean ASCII proof."""
+    # Look for well-formatted proof with proper structure
+    lines = text.split('\n')
+    has_premises = any('Pr' in line for line in lines)
+    has_bars = any('---' in line for line in lines)
+    has_numbered_lines = sum(1 for line in lines if re.match(r'^\d+\s*\|', line)) >= 3
+    
+    return has_premises and has_bars and has_numbered_lines
+
+def extract_clean_proof(text: str) -> str:
+    """Extract the clean proof from assistant response."""
+    # Try to get the last code block
+    code_blocks = re.findall(r'```(?:.*?)\n(.*?)```', text, re.DOTALL)
+    if code_blocks:
+        return code_blocks[-1]
+    
+    # If no code blocks, try to extract proof lines
+    lines = text.split('\n')
+    proof_lines = []
+    in_proof = False
+    
+    for line in lines:
+        if re.match(r'^\d+\s*\|', line) or '---' in line:
+            in_proof = True
+            proof_lines.append(line)
+        elif in_proof and line.strip() == '':
+            proof_lines.append(line)
+        elif in_proof and not re.match(r'^\d+\s*\|', line) and '---' not in line:
+            break
+    
+    return '\n'.join(proof_lines) if proof_lines else text
+      
 def solve_protocol(premises: List[str], conclusion: str, model: str, max_stages: int = 10, timeout: int = 180) -> Dict[str, Any]:
-    """
-    Full protocol condition: Staged approach with skeleton → fill → verify.
-    Uses both Fitch rules AND staged protocol instructions.
-    """
-    premises_str = ", ".join(premises)
-    fitch_rules = load_fitch_rules()
-    protocol_instructions = load_protocol_instructions()
+    # ... existing code ...
     
-    conversation = []
-    start_time = time.time()
-    
-    # Stage 1: Skeleton planning
-    stage1_prompt = f"""{fitch_rules}
-
-{protocol_instructions}
-
-Now prove this argument using the staged protocol:
-
-Premises: {premises_str}
-Conclusion: {conclusion}
-
-STAGE 1 - Create the proof skeleton (or complete proof if simple):
-
-First assess: Is this proof straightforward enough to complete in one step?
-- If YES: Provide the complete proof directly in ASCII notation
-- If NO: Create a skeleton with ellipses (...) for unfinished parts
-
-If creating a skeleton:
-- Write all premises
-- Map subproof structure needed for the conclusion
-- Use ellipses (...) for steps you haven't filled yet
-- Show assumptions and intended conclusions
-
-IMPORTANT: Provide EITHER skeleton OR complete proof, not both."""
-
-    conversation.append({'role': 'user', 'content': stage1_prompt})
-    
-    try:
-        response = completion(
-            model=model,
-            messages=conversation,
-            temperature=0.7,
-            timeout=timeout
-        )
-        
-        assistant_msg = response.choices[0].message.content
-        conversation.append({'role': 'assistant', 'content': assistant_msg})
-        
-        # Check if proof is already complete
-        if not last_proof_has_ellipses(assistant_msg):
-            # Skip staging, go straight to final clean extraction
+    # IMPROVED: Check if proof is already complete (better detection)
+    if proof_looks_complete(assistant_msg, conclusion):
+        # Skip staging, go straight to final clean extraction
+        if not has_clean_ascii_proof(assistant_msg):
             final_prompt = """Please provide the complete proof in clean ASCII notation."""
             conversation.append({'role': 'user', 'content': final_prompt})
             
@@ -261,53 +238,8 @@ IMPORTANT: Provide EITHER skeleton OR complete proof, not both."""
             
             ascii_proof = response.choices[0].message.content
             conversation.append({'role': 'assistant', 'content': ascii_proof})
-            
-            return {
-                'success': True,
-                'ascii_proof': ascii_proof,
-                'conversation': conversation,
-                'time_seconds': time.time() - start_time,
-                'error': None
-            }
-        
-        # Stage 2+: Fill subproofs
-        for stage in range(2, max_stages):
-            fill_prompt = f"""STAGE {stage} - Fill the next unfinished subproof.
-
-Work top-to-bottom. Find the uppermost skeleton with ellipses (...) and fill it with concrete proof steps.
-Keep deeper subproofs skeletal for now.
-
-If all subproofs are complete, just say "All complete - proof is finished." """
-
-            conversation.append({'role': 'user', 'content': fill_prompt})
-            
-            response = completion(
-                model=model,
-                messages=conversation,
-                temperature=0.7,
-                timeout=timeout
-            )
-            
-            assistant_msg = response.choices[0].message.content
-            conversation.append({'role': 'assistant', 'content': assistant_msg})
-            
-            # Check if done after this stage
-            if not last_proof_has_ellipses(assistant_msg):
-                break
-        
-        # Final stage: Get clean proof
-        final_prompt = """Please provide the complete proof in clean ASCII notation."""
-        conversation.append({'role': 'user', 'content': final_prompt})
-        
-        response = completion(
-            model=model,
-            messages=conversation,
-            temperature=0.7,
-            timeout=timeout
-        )
-        
-        ascii_proof = response.choices[0].message.content
-        conversation.append({'role': 'assistant', 'content': ascii_proof})
+        else:
+            ascii_proof = extract_clean_proof(assistant_msg)
         
         return {
             'success': True,
@@ -316,15 +248,68 @@ If all subproofs are complete, just say "All complete - proof is finished." """
             'time_seconds': time.time() - start_time,
             'error': None
         }
+    
+    # Stage 2+: Fill subproofs
+    for stage in range(2, max_stages):
+        fill_prompt = f"""STAGE {stage} - Fill the next unfinished subproof.
+
+Work top-to-bottom. Find the uppermost skeleton with ellipses (...) and fill it with concrete proof steps.
+Keep deeper subproofs skeletal for now.
+
+If all subproofs are complete, just say "All complete - proof is finished." """
+
+        conversation.append({'role': 'user', 'content': fill_prompt})
         
-    except Exception as e:
-        return {
-            'success': False,
-            'ascii_proof': None,
-            'conversation': conversation,
-            'time_seconds': time.time() - start_time,
-            'error': str(e)
-        }
+        response = completion(
+            model=model,
+            messages=conversation,
+            temperature=0.7,
+            timeout=timeout
+        )
+        
+        assistant_msg = response.choices[0].message.content
+        conversation.append({'role': 'assistant', 'content': assistant_msg})
+        
+        # IMPROVED: Check if done after this stage (better detection)
+        if proof_looks_complete(assistant_msg, conclusion):
+            break
+
+# NEW: Improved completion detection function
+def proof_looks_complete(text: str, conclusion: str) -> bool:
+    """Check if proof appears complete using multiple signals."""
+    # Check for explicit completion statements
+    completion_phrases = [
+        "proof is complete",
+        "proof is finished", 
+        "all complete",
+        "no further steps",
+        "qed",
+        "done",
+        "this completes the proof",
+        "the proof is done",
+        "we have reached the conclusion"
+    ]
+    
+    if any(phrase in text.lower() for phrase in completion_phrases):
+        return True
+    
+    # Check structural completeness
+    if not last_proof_has_ellipses(text) and looks_like_complete_proof(text, conclusion):
+        return True
+    
+    return False
+
+# Keep the existing function but improve it
+def last_proof_has_ellipses(response_text: str) -> bool:
+    """Check if the LAST proof in the response has ellipses."""
+    import re
+    code_blocks = re.findall(r'```(?:.*?)\n(.*?)```', response_text, re.DOTALL)
+    
+    if not code_blocks:
+        return '...' in response_text
+    
+    last_block = code_blocks[-1]
+    return '...' in last_block
 
 def solve_proof(
     premises: List[str],
