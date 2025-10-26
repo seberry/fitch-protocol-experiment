@@ -2,6 +2,7 @@ import random
 import itertools
 from pysat.solvers import Glucose3
 from pysat.formula import WCNF
+from src.symbol_standardizer import standardize_symbols
 
 # --- Configuration based on our specifications ---
 ATOMS = ['P', 'Q', 'R', 'S']
@@ -187,15 +188,21 @@ def main():
             if not is_necessary:
                 continue
 
+            # STANDARDIZE SYMBOLS: Convert to student-friendly format after SAT validation
+            standardized_premises = [standardize_symbols(p) for p in premises]
+            standardized_conclusion = standardize_symbols(conclusion)
+
             # If all filters passed, we found a good one!
-            found_entailments.append((premises, conclusion))
+            # If all filters passed, we found a good one!
+            found_entailments.append((standardized_premises, standardized_conclusion))  # ← USE STANDARDIZED!
             print(f"\n--- Found Entailment #{len(found_entailments)} (on attempt {attempts}) ---")
             print("Premises:")
-            for i, p in enumerate(premises):
-                print(f"  {i+1}: {p}")
+            for i, p in enumerate(standardized_premises):  # ← USE STANDARDIZED!
+                print(f"  {i+1}: {p}")  # ← USE STANDARDIZED!
             print("Conclusion:")
-            print(f"  ⊢ {conclusion}")
+            print(f"  ⊢ {standardized_conclusion}")  # ← USE STANDARDIZED!
             attempts = 0 # Reset counter for next find
+           
 
 if __name__ == "__main__":
     main()

@@ -1,0 +1,122 @@
+[
+  {
+    "id": "entailment_001",
+    "premises": [
+      "((Q | S) & S)",
+      "((S & S) -> (S -> R))"
+    ],
+    "conclusion": "R",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  },
+  {
+    "id": "entailment_002",
+    "premises": [
+      "Q",
+      "S"
+    ],
+    "conclusion": "((R -> S) & (Q | R))",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  },
+  {
+    "id": "entailment_003",
+    "premises": [
+      "((P & S) | (S & S))",
+      "(R & (S -> P))"
+    ],
+    "conclusion": "P",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  },
+  {
+    "id": "entailment_004",
+    "premises": [
+      "(P -> (R & Q))",
+      "P"
+    ],
+    "conclusion": "R",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  },
+  {
+    "id": "entailment_005",
+    "premises": [
+      "(S & (R -> P))",
+      "((R & Q) & (Q -> R))"
+    ],
+    "conclusion": "P",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  },
+  {
+    "id": "entailment_006",
+    "premises": [
+      "((Q | P) -> R)",
+      "(Q & Q)"
+    ],
+    "conclusion": "((R & Q) | (S & S))",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  },
+  {
+    "id": "entailment_007",
+    "premises": [
+      "((Q & S) | (S | S))",
+      "((S -> R) | (P & R))"
+    ],
+    "conclusion": "R",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  },
+  {
+    "id": "entailment_008",
+    "premises": [
+      "((R & P) | (P | Q))",
+      "(R & S)"
+    ],
+    "conclusion": "((P | P) | (S & Q))",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  },
+  {
+    "id": "entailment_009",
+    "premises": [
+      "Q",
+      "P"
+    ],
+    "conclusion": "((P & Q) & (R -> R))",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  },
+  {
+    "id": "entailment_010",
+    "premises": [
+      "((R | Q) -> S)",
+      "R"
+    ],
+    "conclusion": "(R & S)",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  }
+]

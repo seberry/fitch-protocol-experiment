@@ -1,0 +1,18 @@
+[
+  {
+    "problem": {
+      "id": "quick_007",
+      "premises": [
+        "((~S) | (~R))",
+        "S"
+      ],
+      "conclusion": "((R & Q) -> P)",
+      "difficulty": {
+        "depth": 2,
+        "length": 3
+      }
+    },
+    "error": null,
+    "time_seconds": 21.199373722076416
+  }
+]

@@ -1,0 +1,18 @@
+[
+  {
+    "problem": {
+      "id": "quick_1761470774_002",
+      "premises": [
+        "((S -> Q) & (P & R))",
+        "((P -> P) & (R -> S))"
+      ],
+      "conclusion": "((P -> R) & S)",
+      "difficulty": {
+        "depth": 2,
+        "length": 3
+      }
+    },
+    "error": null,
+    "time_seconds": 21.093321561813354
+  }
+]

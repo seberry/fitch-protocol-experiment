@@ -6,7 +6,10 @@ Provides summary statistics and visualizations.
 
 import pandas as pd
 import sys
+import io
 from pathlib import Path
+if sys.platform == "win32":
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
 
 
 def analyze_results(csv_file: str):

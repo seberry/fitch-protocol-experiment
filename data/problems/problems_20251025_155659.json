@@ -1,0 +1,122 @@
+[
+  {
+    "id": "entailment_001",
+    "premises": [
+      "((~S) | (~Q))",
+      "(~(~S))"
+    ],
+    "conclusion": "(~Q)",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  },
+  {
+    "id": "entailment_002",
+    "premises": [
+      "(P & P)",
+      "(R | (P -> R))"
+    ],
+    "conclusion": "R",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  },
+  {
+    "id": "entailment_003",
+    "premises": [
+      "(~R)",
+      "(~(~Q))"
+    ],
+    "conclusion": "(~(Q -> R))",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  },
+  {
+    "id": "entailment_004",
+    "premises": [
+      "R",
+      "((~S) -> (~R))"
+    ],
+    "conclusion": "(~(~S))",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  },
+  {
+    "id": "entailment_005",
+    "premises": [
+      "(~(P -> Q))",
+      "((S -> Q) | Q)"
+    ],
+    "conclusion": "(~S)",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  },
+  {
+    "id": "entailment_006",
+    "premises": [
+      "Q",
+      "(~(~R))"
+    ],
+    "conclusion": "((R & Q) & (S | R))",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  },
+  {
+    "id": "entailment_007",
+    "premises": [
+      "(~(R & S))",
+      "S"
+    ],
+    "conclusion": "((Q & P) -> (~R))",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  },
+  {
+    "id": "entailment_008",
+    "premises": [
+      "((~P) -> (~Q))",
+      "Q"
+    ],
+    "conclusion": "((~S) | (P | P))",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  },
+  {
+    "id": "entailment_009",
+    "premises": [
+      "(~(P -> Q))",
+      "((P -> Q) | (~S))"
+    ],
+    "conclusion": "((~R) -> (~S))",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  },
+  {
+    "id": "entailment_010",
+    "premises": [
+      "((~P) & (S -> Q))",
+      "(~Q)"
+    ],
+    "conclusion": "((~R) -> (~S))",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  }
+]

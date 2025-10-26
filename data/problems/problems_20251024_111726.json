@@ -1,0 +1,72 @@
+[
+  {
+    "premises": [
+      "((P -> R) & S)",
+      "R"
+    ],
+    "conclusion": "((S | S) & (S -> R))"
+  },
+  {
+    "premises": [
+      "(P -> S)",
+      "P"
+    ],
+    "conclusion": "S"
+  },
+  {
+    "premises": [
+      "((R & S) | (S -> R))",
+      "S"
+    ],
+    "conclusion": "(R | P)"
+  },
+  {
+    "premises": [
+      "(Q -> (P | P))",
+      "((R & Q) & R)"
+    ],
+    "conclusion": "((R -> P) & (P | S))"
+  },
+  {
+    "premises": [
+      "((Q & P) & (Q | P))",
+      "(Q & R)"
+    ],
+    "conclusion": "((P & Q) & (R & R))"
+  },
+  {
+    "premises": [
+      "(S -> (Q & R))",
+      "S"
+    ],
+    "conclusion": "Q"
+  },
+  {
+    "premises": [
+      "((R -> Q) & (P -> P))",
+      "R"
+    ],
+    "conclusion": "((P | P) -> (Q | Q))"
+  },
+  {
+    "premises": [
+      "S",
+      "P"
+    ],
+    "conclusion": "((R | P) & S)"
+  },
+  {
+    "premises": [
+      "Q",
+      "P"
+    ],
+    "conclusion": "((Q | S) & (S -> P))"
+  },
+  {
+    "premises": [
+      "R",
+      "((P -> R) & (R -> S))"
+    ],
+    "conclusion": "S"
+  }
+]

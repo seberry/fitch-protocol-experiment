@@ -1,0 +1,122 @@
+[
+  {
+    "id": "entailment_001",
+    "premises": [
+      "(S -> (P | R))",
+      "((P | R) | (S | R))"
+    ],
+    "conclusion": "((R | Q) | P)",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  },
+  {
+    "id": "entailment_002",
+    "premises": [
+      "((R | Q) -> R)",
+      "((Q -> R) -> (S & P))"
+    ],
+    "conclusion": "((Q -> S) & (P | R))",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  },
+  {
+    "id": "entailment_003",
+    "premises": [
+      "R",
+      "Q"
+    ],
+    "conclusion": "((P -> Q) & (P -> R))",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  },
+  {
+    "id": "entailment_004",
+    "premises": [
+      "((Q & S) -> R)",
+      "Q"
+    ],
+    "conclusion": "((Q & Q) & (S -> R))",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  },
+  {
+    "id": "entailment_005",
+    "premises": [
+      "(S & R)",
+      "Q"
+    ],
+    "conclusion": "((Q -> P) -> (S & P))",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  },
+  {
+    "id": "entailment_006",
+    "premises": [
+      "((Q | R) & R)",
+      "(S | P)"
+    ],
+    "conclusion": "((R & P) | (S | S))",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  },
+  {
+    "id": "entailment_007",
+    "premises": [
+      "((S | S) & Q)",
+      "((S -> S) -> (R & R))"
+    ],
+    "conclusion": "(R & (R -> S))",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  },
+  {
+    "id": "entailment_008",
+    "premises": [
+      "((Q | Q) -> (P & R))",
+      "((R & P) | (Q & S))"
+    ],
+    "conclusion": "R",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  },
+  {
+    "id": "entailment_009",
+    "premises": [
+      "P",
+      "(Q | (Q & R))"
+    ],
+    "conclusion": "((R -> P) & (Q | R))",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  },
+  {
+    "id": "entailment_010",
+    "premises": [
+      "P",
+      "((Q -> Q) -> (P -> Q))"
+    ],
+    "conclusion": "(Q | Q)",
+    "difficulty": {
+      "depth": 2,
+      "length": 3
+    }
+  }
+]

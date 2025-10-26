@@ -1,7 +1,12 @@
 import random
 import itertools
+import sys
 from pysat.solvers import Glucose3
 from pysat.formula import WCNF    
+from src.symbol_standardizer import standardize_symbols
+
+
+
 
 # --- Configuration ---
 ATOMS = ['P', 'Q', 'R', 'S']
@@ -109,20 +114,18 @@ def check_contradiction(premises):
 
 def main():
     """Main function to find and print entailments."""
+    
     # --- NEW: Interactive Menu ---
     print("--- Entailment Finder (Interactive) ---")
     
-    menu_text = """
-Please select a bundle of connectives to use for generation:
-  1. Basic Implication & Conjunction (&, ->)
-  2. Positive Logic (&, ->, <->, v)
-  3. Full TFL (all connectives including ~)
+    print("Please select a bundle of connectives to use for generation:")
+    print("  1. Basic Implication & Conjunction (&, ->)")
+    print("  2. Positive Logic (&, ->, <->, v)")
+    print("  3. Full TFL (all connectives including ~)")
 
-Enter your choice (1, 2, or 3): """
-    
     selected_connectives = {}
     while True:
-        choice = input(menu_text)
+        choice = input("Enter your choice (1, 2, or 3): ").strip()
         if choice == '1':
             selected_connectives = {'binary': ['&', '->']}
             print("Searching for problems using only '&' and '->'...")
@@ -167,14 +170,19 @@ Enter your choice (1, 2, or 3): """
         except (ValueError, IndexError):
             continue
 
-        found_entailments.append((premises, conclusion))
+         # STANDARDIZE SYMBOLS: Convert to student-friendly format after SAT validation
+        standardized_premises = [standardize_symbols(p) for p in premises]
+        standardized_conclusion = standardize_symbols(conclusion)
+        
+        found_entailments.append((standardized_premises, standardized_conclusion))
         print(f"\n--- Found Entailment #{len(found_entailments)} (on attempt {attempts}) ---")
         print("Premises:")
-        for i, p in enumerate(premises):
+        for i, p in enumerate(standardized_premises):
             print(f"  {i+1}: {p}")
         print("Conclusion:")
-        print(f"  |= {conclusion}")
-        attempts = 0
+        print(f"  |= {standardized_conclusion}")
+        attempts = 0# Fix Windows terminal encoding
+
 
 
 if __name__ == "__main__":

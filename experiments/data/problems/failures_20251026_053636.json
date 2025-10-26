@@ -1,0 +1,98 @@
+[
+  {
+    "problem": {
+      "id": "quick_1761471125_001",
+      "premises": [
+        "(R & (P | S))",
+        "((Q -> R) -> (R -> Q))"
+      ],
+      "conclusion": "((P -> R) & (P | Q))",
+      "difficulty": {
+        "depth": 2,
+        "length": 3
+      }
+    },
+    "error": null,
+    "time_seconds": 37.82330393791199
+  },
+  {
+    "problem": {
+      "id": "quick_1761471125_006",
+      "premises": [
+        "Q",
+        "((P | Q) -> (R | R))"
+      ],
+      "conclusion": "R",
+      "difficulty": {
+        "depth": 2,
+        "length": 3
+      }
+    },
+    "error": null,
+    "time_seconds": 12.337052583694458
+  },
+  {
+    "problem": {
+      "id": "quick_1761471125_008",
+      "premises": [
+        "P",
+        "S"
+      ],
+      "conclusion": "((S | Q) & (Q | P))",
+      "difficulty": {
+        "depth": 2,
+        "length": 3
+      }
+    },
+    "error": null,
+    "time_seconds": 9.690393209457397
+  },
+  {
+    "problem": {
+      "id": "quick_1761471125_009",
+      "premises": [
+        "P",
+        "S"
+      ],
+      "conclusion": "((P & R) | (S & P))",
+      "difficulty": {
+        "depth": 2,
+        "length": 3
+      }
+    },
+    "error": null,
+    "time_seconds": 12.661642789840698
+  },
+  {
+    "problem": {
+      "id": "quick_1761471125_018",
+      "premises": [
+        "R",
+        "((Q | R) & Q)"
+      ],
+      "conclusion": "((R | P) -> (Q & R))",
+      "difficulty": {
+        "depth": 2,
+        "length": 3
+      }
+    },
+    "error": null,
+    "time_seconds": 17.71204447746277
+  },
+  {
+    "problem": {
+      "id": "quick_1761471125_019",
+      "premises": [
+        "((P & R) & (R | S))",
+        "S"
+      ],
+      "conclusion": "((S | S) & P)",
+      "difficulty": {
+        "depth": 2,
+        "length": 3
+      }
+    },
+    "error": null,
+    "time_seconds": 17.271461725234985
+  }
+]

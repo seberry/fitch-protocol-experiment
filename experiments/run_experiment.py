@@ -8,12 +8,16 @@ Runs the Fitch protocol experiment:
 """
 
 import sys
+import io
 import json
 import csv
 import traceback
 from pathlib import Path
 from datetime import datetime
 from typing import List, Dict, Any
+
+if sys.platform == "win32":
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
 
 # Add parent directory to path so we can import from src/
 sys.path.insert(0, str(Path(__file__).parent.parent))
@@ -46,7 +50,7 @@ def create_experiment_directory(output_file: str) -> tuple[str, str]:
     
     csv_path = experiment_dir / "results.csv"
     
-    print(f"📁 Created experiment directory: {experiment_dir}")
+    print(f" Created experiment directory: {experiment_dir}")
     print(f"   CSV: {csv_path}")
     print(f"   Conversations: {conversations_dir}\n")
     
@@ -163,6 +167,7 @@ def save_result(result: Dict[str, Any], output_file: str):
         }
         
         writer.writerow(row)
+
 
 def run_experiment(
     problems_file: str,

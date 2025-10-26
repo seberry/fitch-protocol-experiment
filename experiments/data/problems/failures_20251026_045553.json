@@ -1,0 +1,34 @@
+[
+  {
+    "problem": {
+      "id": "quick_002",
+      "premises": [
+        "(~P)",
+        "((~P) -> (~Q))"
+      ],
+      "conclusion": "((Q & R) | (~Q))",
+      "difficulty": {
+        "depth": 2,
+        "length": 3
+      }
+    },
+    "error": null,
+    "time_seconds": 14.021452903747559
+  },
+  {
+    "problem": {
+      "id": "quick_008",
+      "premises": [
+        "(~(R -> S))",
+        "P"
+      ],
+      "conclusion": "((R | R) & P)",
+      "difficulty": {
+        "depth": 2,
+        "length": 3
+      }
+    },
+    "error": null,
+    "time_seconds": 37.098235845565796
+  }
+]
