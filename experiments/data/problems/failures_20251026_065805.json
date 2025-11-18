@@ -1,0 +1,34 @@
+[
+  {
+    "problem": {
+      "id": "quick_1761475971_001",
+      "premises": [
+        "((~P) & (~Q))",
+        "((~Q) -> (S | Q))"
+      ],
+      "conclusion": "(~(~S))",
+      "difficulty": {
+        "depth": 2,
+        "length": 3
+      }
+    },
+    "error": null,
+    "time_seconds": 13.598191738128662
+  },
+  {
+    "problem": {
+      "id": "quick_1761475971_002",
+      "premises": [
+        "(Q -> P)",
+        "(~(Q -> S))"
+      ],
+      "conclusion": "P",
+      "difficulty": {
+        "depth": 2,
+        "length": 3
+      }
+    },
+    "error": null,
+    "time_seconds": 35.81488347053528
+  }
+]
