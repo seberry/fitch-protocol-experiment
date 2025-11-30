@@ -1,4 +1,12 @@
-﻿# Fitch Protocol Experiment
+
+ 
+ THIS IS AN AMATURE PRACTICE PROJECT, NOT REALLY FOR HUMAN CONSUMPTION. READ AT YOUR OWN PERIL. 
+
+ 
+ 
+ 
+ 
+ # Fitch Protocol Experiment
 
 **Goal:** Test whether structured visual notation scaffolds LLM reasoning on complex formal logic proofs.
 
